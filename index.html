@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=Rajdhani:wght@400;600;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #080a0d;
+            --bg2: #0c0f14;
+            --bg3: #111620;
+            --accent: #c8a84b;
+            --accent2: #e8c96b;
+            --red: #dc3545;
+            --red-dark: #8b0000;
+            --green: #27ae60;
+            --blue: #2980b9;
+            --text: #d4c9a8;
+            --muted: #7a7060;
+            --border: #2a2318;
+            --crime-red: rgba(220, 53, 69, 0.08);
+            --scan: rgba(200, 168, 75, 0.07);
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 600px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200, 168, 75, 0.012) 2px, rgba(200, 168, 75, 0.012) 4px),
+                radial-gradient(ellipse at 20% 50%, rgba(220, 53, 69, 0.03) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 50%, rgba(200, 168, 75, 0.03) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .scanline {
+            position: absolute;
+            top: -100%;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 90%, rgba(220, 53, 69, 0.03) 100%);
+            animation: scan 8s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes scan {
+            0% {
+                top: -100%;
+            }
+
+            100% {
+                top: 100%;
+            }
+        }
+
+        /* Police tape banner */
+        .police-tape {
+            background: repeating-linear-gradient(-45deg,
+                    #e8c96b,
+                    #e8c96b 10px,
+                    #1a1a1a 10px,
+                    #1a1a1a 20px);
+            padding: 4px 0;
+            text-align: center;
+            margin-bottom: 0;
+            position: relative;
+            z-index: 3;
+        }
+
+        .police-tape-text {
+            background: #1a1a1a;
+            color: #e8c96b;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 14px;
+            letter-spacing: 8px;
+            padding: 2px 20px;
+            display: inline-block;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+            position: relative;
+        }
+
+        .header::before {
+            content: '⚠ RESTRICTED ACCESS — AUTHORIZED PERSONNEL ONLY ⚠';
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            color: var(--red);
+            display: block;
+            letter-spacing: 3px;
+            margin-bottom: 6px;
+            animation: blink 2s step-end infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 42px;
+            letter-spacing: 8px;
+            color: var(--accent);
+            text-shadow: 0 0 20px rgba(200, 168, 75, 0.4);
+            line-height: 1;
+        }
+
+        .logo span {
+            color: #fff;
+        }
+
+        .subtitle {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            letter-spacing: 3px;
+            margin-top: 4px;
+        }
+
+        .badge-row {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .badge {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 9px;
+            padding: 3px 10px;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            letter-spacing: 2px;
+            opacity: 0.7;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .panel {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        }
+
+        .panel-header {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            color: var(--accent);
+            letter-spacing: 3px;
+            padding: 10px 14px 8px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-header .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        .panel-body {
+            padding: 14px;
+        }
+
+        .field-group {
+            margin-bottom: 12px;
+        }
+
+        .field-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            color: var(--muted);
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .field-label::before {
+            content: '>';
+            color: var(--accent);
+        }
+
+        select,
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
+            padding: 7px 10px;
+            outline: none;
+            transition: border-color 0.2s;
+            appearance: none;
+        }
+
+        select:focus,
+        input:focus,
+        textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 8px rgba(200, 168, 75, 0.15);
+        }
+
+        select option {
+            background: var(--bg3);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 70px;
+            line-height: 1.5;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .three-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+
+        .generate-btn {
+            width: 100%;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 20px;
+            letter-spacing: 4px;
+            padding: 12px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .generate-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--accent);
+            transform: translateX(-100%);
+            transition: transform 0.3s;
+            z-index: -1;
+        }
+
+        .generate-btn:hover {
+            color: #000;
+        }
+
+        .generate-btn:hover::before {
+            transform: translateX(0);
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .output-panel {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .output-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        }
+
+        .output-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .sketch-area {
+            border-right: 1px solid var(--border);
+            padding: 16px;
+            min-height: 340px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .sketch-placeholder {
+            text-align: center;
+            opacity: 0.3;
+        }
+
+        .sketch-icon {
+            font-size: 48px;
+            margin-bottom: 8px;
+            filter: grayscale(1);
+        }
+
+        .sketch-placeholder p {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: var(--muted);
+        }
+
+        #generated-image {
+            max-width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border: 1px solid var(--border);
+            filter: contrast(1.05) saturate(1.1);
+            display: none;
+        }
+
+        .match-verify {
+            display: none;
+            margin-top: 12px;
+            padding: 12px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+        }
+
+        .match-verify.visible {
+            display: block;
+        }
+
+        .match-verify-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            color: var(--accent);
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .match-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .match-btn {
+            flex: 1;
+            padding: 10px 8px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: var(--bg2);
+            color: var(--text);
+            transition: all 0.3s;
+        }
+
+        .match-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .match-btn.selected {
+            border-color: var(--accent);
+            background: rgba(200, 168, 75, 0.15);
+            color: var(--accent);
+        }
+
+        .match-btn.yes:hover,
+        .match-btn.yes.selected {
+            border-color: var(--green);
+            color: var(--green);
+            background: rgba(39, 174, 96, 0.1);
+        }
+
+        .match-btn.no:hover,
+        .match-btn.no.selected {
+            border-color: var(--red);
+            color: var(--red);
+            background: rgba(192, 57, 43, 0.1);
+        }
+
+        .match-btn.partial:hover,
+        .match-btn.partial.selected {
+            border-color: #e67e22;
+            color: #e67e22;
+            background: rgba(230, 126, 34, 0.1);
+        }
+
+        .match-result {
+            display: none;
+            margin-top: 10px;
+            padding: 8px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .match-result.visible {
+            display: block;
+        }
+
+        .profile-area {
+            padding: 16px;
+        }
+
+        .profile-field {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(42, 35, 24, 0.8);
+        }
+
+        .profile-field:last-child {
+            border-bottom: none;
+        }
+
+        .pf-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            color: var(--muted);
+            letter-spacing: 1px;
+            min-width: 90px;
+        }
+
+        .pf-value {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
+            color: var(--text);
+            text-align: right;
+            flex: 1;
+        }
+
+        .pf-value.highlight {
+            color: var(--accent);
+        }
+
+        .case-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg3);
+        }
+
+        .case-stat {
+            text-align: center;
+        }
+
+        .case-stat-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 22px;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .case-stat-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 9px;
+            color: var(--muted);
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
+
+        .status-bar {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg3);
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+            margin-right: 6px;
+        }
+
+        .loading-overlay {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 12, 15, 0.9);
+            z-index: 10;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 2px solid var(--border);
+            border-top-color: var(--accent);
+            border-right-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
+            color: var(--accent);
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .loading-sub {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 9px;
+            color: var(--muted);
+            letter-spacing: 1px;
+            animation: blink 1.5s step-end infinite;
+        }
+
+        .corner-tl,
+        .corner-tr,
+        .corner-bl,
+        .corner-br {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-color: var(--accent);
+            border-style: solid;
+            opacity: 0.5;
+        }
+
+        .corner-tl {
+            top: 4px;
+            left: 4px;
+            border-width: 1px 0 0 1px;
+        }
+
+        .corner-tr {
+            top: 4px;
+            right: 4px;
+            border-width: 1px 1px 0 0;
+        }
+
+        .corner-bl {
+            bottom: 4px;
+            left: 4px;
+            border-width: 0 0 1px 1px;
+        }
+
+        .corner-br {
+            bottom: 4px;
+            right: 4px;
+            border-width: 0 1px 1px 0;
+        }
+
+        .ai-desc-area {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            margin-top: 8px;
+            padding: 10px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            color: var(--muted);
+            line-height: 1.7;
+            min-height: 50px;
+            display: none;
+        }
+
+        .ai-desc-area.visible {
+            display: block;
+        }
+
+        .ai-desc-label {
+            color: var(--accent);
+            font-size: 9px;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+
+        .confidence-bar {
+            height: 3px;
+            background: var(--border);
+            margin-top: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            width: 0%;
+            transition: width 1.5s ease;
+        }
+
+        #case-number {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            color: var(--accent);
+            letter-spacing: 1px;
+        }
+
+        .err-msg {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            color: var(--red);
+            padding: 8px;
+            text-align: center;
+            display: none;
+        }
+
+        .sketch-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 9px;
+            color: var(--muted);
+            letter-spacing: 2px;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .watermark {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 8px;
+            color: var(--muted);
+            opacity: 0.4;
+            letter-spacing: 1px;
+            pointer-events: none;
+        }
+
+        .crime-panel {
+            background: linear-gradient(135deg, var(--bg2) 0%, rgba(139, 0, 0, 0.05) 100%);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--red);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .crime-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--red), transparent, var(--red));
+        }
+
+        .crime-panel .panel-header {
+            color: var(--red);
+            border-bottom: 1px solid rgba(220, 53, 69, 0.2);
+        }
+
+        .crime-panel .panel-header .dot {
+            background: var(--red);
+            animation: pulse-red 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-red {
+
+            0%,
+            100% {
+                opacity: 1;
+                box-shadow: 0 0 4px var(--red);
+            }
+
+            50% {
+                opacity: 0.3;
+                box-shadow: none;
+            }
+        }
+
+        .severity-tag {
+            display: inline-block;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1px;
+            padding: 2px 8px;
+            border: 1px solid;
+            margin-top: 4px;
+        }
+
+        .severity-high {
+            color: var(--red);
+            border-color: var(--red);
+            background: rgba(220, 53, 69, 0.1);
+        }
+
+        .severity-med {
+            color: #e67e22;
+            border-color: #e67e22;
+            background: rgba(230, 126, 34, 0.1);
+        }
+
+        .severity-low {
+            color: var(--accent);
+            border-color: var(--accent);
+            background: rgba(200, 168, 75, 0.1);
+        }
+
+        .evidence-tag {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 9px;
+            color: var(--red);
+            letter-spacing: 2px;
+            padding: 3px 8px;
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            background: rgba(220, 53, 69, 0.05);
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="police-tape">
+        <span class="police-tape-text">CRIME SCENE — DO NOT CROSS — CRIME SCENE — DO NOT CROSS</span>
+    </div>
+    <div class="scanline"></div>
+    <div class="container">
+
+        <div class="header">
+            <div class="logo"><span>P</span>HANTOM <span>AI</span></div>
+            <div class="subtitle">CRIMINAL FORENSIC IDENTIFICATION & CASE MANAGEMENT SYSTEM</div>
+            <div class="badge-row">
+                <div class="badge">FORENSIC UNIT</div>
+                <div class="badge">AI-SKETCH GEN</div>
+                <div class="badge" style="color:var(--red); border-color:var(--red);">CRIME DIVISION</div>
+                <div class="badge">CASE MGMT</div>
+            </div>
+        </div>
+
+        <div class="case-info">
+            <div class="case-stat">
+                <div class="case-stat-num" id="total-sketches">00</div>
+                <div class="case-stat-label">SKETCHES GEN.</div>
+            </div>
+            <div class="case-stat">
+                <div class="case-stat-num" id="case-number-display">—</div>
+                <div class="case-stat-label">ACTIVE CASE</div>
+            </div>
+            <div class="case-stat">
+                <div class="case-stat-num" id="conf-display">—</div>
+                <div class="case-stat-label">CONFIDENCE</div>
+            </div>
+        </div>
+
+        <div style="height:12px;"></div>
+
+        <div class="main-grid">
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="dot"></div>
+                    SUSPECT BIOMETRIC INPUT
+                </div>
+                <div class="panel-body">
+                    <div class="two-col">
+                        <div class="field-group">
+                            <div class="field-label">AGE RANGE</div>
+                            <select id="age">
+                                <option value="">-- SELECT --</option>
+                                <option value="child, about 10-14 years old">10–14</option>
+                                <option value="teenager, about 15-19 years old">15–19</option>
+                                <option value="young adult, about 20-25 years old">20–25</option>
+                                <option value="adult, about 26-30 years old">26–30</option>
+                                <option value="adult, about 31-35 years old">31–35</option>
+                                <option value="middle-aged, about 36-40 years old">36–40</option>
+                                <option value="middle-aged, about 41-45 years old">41–45</option>
+                                <option value="middle-aged, about 46-50 years old">46–50</option>
+                                <option value="older adult, about 51-55 years old">51–55</option>
+                                <option value="older adult, about 56-60 years old">56–60</option>
+                                <option value="senior, about 61-70 years old">61–70</option>
+                                <option value="elderly, above 70 years old">70+</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <div class="field-label">GENDER</div>
+                            <select id="gender">
+                                <option value="">-- SELECT --</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="two-col">
+                        <div class="field-group">
+                            <div class="field-label">ETHNICITY</div>
+                            <select id="ethnicity">
+                                <option value="">-- SELECT --</option>
+                                <option disabled style="color:var(--accent);">── INDIAN / SOUTH ASIAN ──</option>
+                                <option value="North Indian, Indo-Aryan features, fair to wheatish complexion">North
+                                    Indian</option>
+                                <option value="South Indian, Dravidian features, darker complexion">South Indian
+                                </option>
+                                <option value="Northeast Indian, Mongoloid features, East Asian influenced">Northeast
+                                    Indian</option>
+                                <option value="Bengali, Indo-Aryan features, medium brown complexion">Bengali</option>
+                                <option value="Punjabi, tall build, fair complexion, sharp features">Punjabi</option>
+                                <option value="Marathi, medium complexion, strong features">Marathi</option>
+                                <option value="Gujarati, fair to medium complexion, soft features">Gujarati</option>
+                                <option value="Rajasthani, wheatish complexion, sharp angular features">Rajasthani
+                                </option>
+                                <option value="South Asian, Indian subcontinent features">South Asian (General)</option>
+                                <option value="Sri Lankan, Sinhalese features, medium to dark complexion">Sri Lankan
+                                </option>
+                                <option value="Nepali, Tibeto-Burman and Indo-Aryan mixed features">Nepali</option>
+                                <option value="Pakistani, Indo-Aryan features, fair to wheatish complexion">Pakistani
+                                </option>
+                                <option value="Bangladeshi, Indo-Aryan features, medium brown complexion">Bangladeshi
+                                </option>
+                                <option disabled style="color:var(--accent);">── EAST / SOUTHEAST ASIAN ──</option>
+                                <option value="East Asian">East Asian</option>
+                                <option value="Southeast Asian">Southeast Asian</option>
+                                <option value="Central Asian">Central Asian</option>
+                                <option disabled style="color:var(--accent);">── OTHER ──</option>
+                                <option value="Caucasian">Caucasian</option>
+                                <option value="African">African</option>
+                                <option value="African American">African American</option>
+                                <option value="Middle Eastern">Middle Eastern</option>
+                                <option value="Hispanic">Hispanic/Latino</option>
+                                <option value="Native American">Native American</option>
+                                <option value="Pacific Islander">Pacific Islander</option>
+                                <option value="Mixed race">Mixed Race</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <div class="field-label">BUILD</div>
+                            <select id="build">
+                                <option value="">-- SELECT --</option>
+                                <option value="very thin and frail build">Very Thin</option>
+                                <option value="slim and lean build">Slim/Lean</option>
+                                <option value="average build">Average</option>
+                                <option value="athletic and toned build">Athletic</option>
+                                <option value="stocky and muscular build">Stocky/Muscular</option>
+                                <option value="broad shouldered and large build">Broad/Large</option>
+                                <option value="heavy and overweight build">Heavy/Overweight</option>
+                                <option value="obese and very heavy build">Obese</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="two-col">
+                        <div class="field-group">
+                            <div class="field-label">SKIN TONE</div>
+                            <select id="skin-tone">
+                                <option value="">-- SELECT --</option>
+                                <option value="very fair pale skin">Very Fair/Pale</option>
+                                <option value="fair light skin">Fair/Light</option>
+                                <option value="light medium skin tone">Light Medium</option>
+                                <option value="medium olive skin tone">Medium/Olive</option>
+                                <option value="medium brown skin tone">Medium Brown</option>
+                                <option value="dark brown skin tone">Dark Brown</option>
+                                <option value="very dark skin tone">Very Dark</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <div class="field-label">HEIGHT</div>
+                            <select id="height">
+                                <option value="">-- SELECT --</option>
+                                <option value="very short person, under 5 feet">Very Short (&lt;5')</option>
+                                <option value="short person, about 5 feet 2 inches">Short (5'0-5'4)</option>
+                                <option value="average height person, about 5 feet 7 inches">Average (5'5-5'8)</option>
+                                <option value="tall person, about 5 feet 11 inches">Tall (5'9-6'0)</option>
+                                <option value="very tall person, about 6 feet 2 inches">Very Tall (6'1-6'4)</option>
+                                <option value="extremely tall person, over 6 feet 4 inches">Extremely Tall (6'4+)
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <div class="field-label">HAIR</div>
+                        <div class="two-col">
+                            <select id="hair-color">
+                                <option value="">COLOR</option>
+                                <option value="jet black hair">Jet Black</option>
+                                <option value="black hair">Black</option>
+                                <option value="dark brown hair">Dark Brown</option>
+                                <option value="medium brown hair">Medium Brown</option>
+                                <option value="light brown hair">Light Brown</option>
+                                <option value="dirty blonde hair">Dirty Blonde</option>
+                                <option value="golden blonde hair">Golden Blonde</option>
+                                <option value="platinum blonde hair">Platinum Blonde</option>
+                                <option value="strawberry blonde hair">Strawberry Blonde</option>
+                                <option value="red hair">Red/Ginger</option>
+                                <option value="auburn hair">Auburn</option>
+                                <option value="grey hair">Grey</option>
+                                <option value="white hair">White</option>
+                                <option value="salt and pepper grey hair">Salt &amp; Pepper</option>
+                                <option value="dyed unnatural colored hair">Dyed/Unnatural</option>
+                            </select>
+                            <select id="hair-style">
+                                <option value="">STYLE</option>
+                                <option value="very short cropped hair">Very Short/Cropped</option>
+                                <option value="short straight hair">Short Straight</option>
+                                <option value="short curly hair">Short Curly</option>
+                                <option value="short wavy hair">Short Wavy</option>
+                                <option value="medium-length straight hair">Medium Straight</option>
+                                <option value="medium-length wavy hair">Medium Wavy</option>
+                                <option value="medium-length curly hair">Medium Curly</option>
+                                <option value="long straight hair">Long Straight</option>
+                                <option value="long wavy hair">Long Wavy</option>
+                                <option value="long curly hair">Long Curly</option>
+                                <option value="buzz cut hair">Buzz Cut</option>
+                                <option value="slicked back hair">Slicked Back</option>
+                                <option value="ponytail hairstyle">Ponytail</option>
+                                <option value="braided hair">Braided</option>
+                                <option value="dreadlocks hairstyle">Dreadlocks</option>
+                                <option value="afro hairstyle">Afro</option>
+                                <option value="man bun hairstyle">Man Bun</option>
+                                <option value="receding hairline">Receding Hairline</option>
+                                <option value="bald head">Bald</option>
+                                <option value="partially bald with hair on sides">Partially Bald</option>
+                                <option value="messy unkempt hair">Messy/Unkempt</option>
+                                <option value="combed side-parted hair">Side Part</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <div class="field-label">FACIAL HAIR</div>
+                        <select id="facial-hair">
+                            <option value="clean-shaven face">Clean Shaven</option>
+                            <option value="five o'clock shadow">5 O'Clock Shadow</option>
+                            <option value="light stubble beard">Light Stubble</option>
+                            <option value="heavy stubble beard">Heavy Stubble</option>
+                            <option value="short trimmed beard">Short Trimmed Beard</option>
+                            <option value="medium length full beard">Medium Full Beard</option>
+                            <option value="long full beard">Long Full Beard</option>
+                            <option value="thick bushy beard">Thick Bushy Beard</option>
+                            <option value="thin pencil mustache">Pencil Mustache</option>
+                            <option value="thick handlebar mustache">Handlebar Mustache</option>
+                            <option value="thick mustache">Thick Mustache</option>
+                            <option value="goatee">Goatee</option>
+                            <option value="goatee with mustache">Goatee + Mustache</option>
+                            <option value="mutton chop sideburns">Mutton Chops</option>
+                            <option value="long thick sideburns">Long Sideburns</option>
+                            <option value="chin strap beard">Chin Strap</option>
+                            <option value="patchy uneven facial hair">Patchy/Uneven</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="dot"></div>
+                    FACIAL FEATURE ANALYSIS
+                </div>
+                <div class="panel-body">
+                    <div class="two-col">
+                        <div class="field-group">
+                            <div class="field-label">EYES</div>
+                            <select id="eyes">
+                                <option value="average eyes">Average</option>
+                                <option value="small narrow eyes">Small/Narrow</option>
+                                <option value="large wide eyes">Large/Wide</option>
+                                <option value="deep-set eyes">Deep-set</option>
+                                <option value="prominent bulging eyes">Prominent/Bulging</option>
+                                <option value="almond shaped eyes">Almond-shaped</option>
+                                <option value="hooded droopy eyes">Hooded/Droopy</option>
+                                <option value="round eyes">Round</option>
+                                <option value="upturned cat eyes">Upturned/Cat</option>
+                                <option value="downturned eyes">Downturned</option>
+                                <option value="close-set eyes">Close-set</option>
+                                <option value="wide-set eyes">Wide-set</option>
+                                <option value="monolid eyes">Monolid</option>
+                                <option value="sunken tired looking eyes">Sunken/Tired</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <div class="field-label">EYE COLOR</div>
+                            <select id="eye-color">
+                                <option value="dark brown eyes">Dark Brown</option>
+                                <option value="medium brown eyes">Medium Brown</option>
+                                <option value="light brown eyes">Light Brown</option>
+                                <option value="amber eyes">Amber</option>
+                                <option value="black eyes">Black</option>
+                                <option value="dark blue eyes">Dark Blue</option>
+                                <option value="light blue eyes">Light Blue</option>
+                                <option value="blue-grey eyes">Blue-Grey</option>
+                                <option value="green eyes">Green</option>
+                                <option value="grey eyes">Grey</option>
+                                <option value="hazel eyes">Hazel</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="two-col">
+                        <div class="field-group">
+                            <div class="field-label">NOSE</div>
+                            <select id="nose">
+                                <option value="average nose">Average</option>
+                                <option value="wide flat nose">Wide/Flat</option>
+                                <option value="narrow pointed nose">Narrow/Pointed</option>
+                                <option value="large prominent nose">Large/Prominent</option>
+                                <option value="small upturned nose">Small/Upturned</option>
+                                <option value="hooked aquiline nose">Hooked/Aquiline</option>
+                                <option value="bulbous round nose">Bulbous/Round</option>
+                                <option value="long thin nose">Long/Thin</option>
+                                <option value="crooked asymmetric nose">Crooked</option>
+                                <option value="button nose">Button Nose</option>
+                                <option value="Roman straight bridge nose">Roman/Straight</option>
+                                <option value="snub short nose">Snub/Short</option>
+                                <option value="wide flared nostrils">Wide Nostrils</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <div class="field-label">JAW/FACE</div>
+                            <select id="jaw">
+                                <option value="oval face shape">Oval Face</option>
+                                <option value="round face shape">Round Face</option>
+                                <option value="square jaw and face">Square Jaw</option>
+                                <option value="rectangular long face">Rectangular/Long</option>
+                                <option value="narrow thin face">Narrow/Thin</option>
+                                <option value="heart-shaped face">Heart-shaped</option>
+                                <option value="diamond shaped face">Diamond</option>
+                                <option value="triangle shaped face">Triangle</option>
+                                <option value="strong prominent jawline">Strong Jawline</option>
+                                <option value="weak receding jawline">Weak/Receding Jaw</option>
+                                <option value="double chin chubby face">Double Chin</option>
+                                <option value="gaunt hollow cheeks face">Gaunt/Hollow</option>
+                                <option value="high prominent cheekbones">High Cheekbones</option>
+                                <option value="wide flat face">Wide/Flat</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="two-col">
+                        <div class="field-group">
+                            <div class="field-label">LIPS/MOUTH</div>
+                            <select id="lips">
+                                <option value="">-- SELECT --</option>
+                                <option value="thin narrow lips">Thin/Narrow</option>
+                                <option value="average medium lips">Average</option>
+                                <option value="full thick lips">Full/Thick</option>
+                                <option value="wide large mouth">Wide Mouth</option>
+                                <option value="small narrow mouth">Small Mouth</option>
+                                <option value="uneven asymmetric lips">Uneven/Asymmetric</option>
+                                <option value="downturned mouth corners">Downturned Corners</option>
+                                <option value="cupid's bow shaped lips">Cupid's Bow</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <div class="field-label">FOREHEAD</div>
+                            <select id="forehead">
+                                <option value="">-- SELECT --</option>
+                                <option value="average forehead">Average</option>
+                                <option value="high broad forehead">High/Broad</option>
+                                <option value="narrow small forehead">Narrow/Small</option>
+                                <option value="protruding prominent forehead">Protruding</option>
+                                <option value="wrinkled lined forehead">Wrinkled/Lined</option>
+                                <option value="sloped forehead">Sloped</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="two-col">
+                        <div class="field-group">
+                            <div class="field-label">EYEBROWS</div>
+                            <select id="eyebrows">
+                                <option value="">-- SELECT --</option>
+                                <option value="average eyebrows">Average</option>
+                                <option value="thick bushy eyebrows">Thick/Bushy</option>
+                                <option value="thin arched eyebrows">Thin/Arched</option>
+                                <option value="straight flat eyebrows">Straight/Flat</option>
+                                <option value="curved rounded eyebrows">Curved/Rounded</option>
+                                <option value="unibrow connected eyebrows">Unibrow</option>
+                                <option value="sparse thin eyebrows">Sparse/Thin</option>
+                                <option value="angled sharp eyebrows">Angled/Sharp</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <div class="field-label">EARS</div>
+                            <select id="ears">
+                                <option value="">-- SELECT --</option>
+                                <option value="average ears">Average</option>
+                                <option value="large protruding ears">Large/Protruding</option>
+                                <option value="small ears close to head">Small/Close</option>
+                                <option value="cauliflower shaped ears">Cauliflower</option>
+                                <option value="pointed elf-like ears">Pointed</option>
+                                <option value="attached earlobes">Attached Lobes</option>
+                                <option value="large free hanging earlobes">Large Lobes</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <div class="field-label">DISTINGUISHING MARKS</div>
+                        <select id="marks">
+                            <option value="">None</option>
+                            <option value="a visible scar on the left cheek">Scar (Left Cheek)</option>
+                            <option value="a visible scar on the right cheek">Scar (Right Cheek)</option>
+                            <option value="a scar on the forehead">Scar (Forehead)</option>
+                            <option value="a scar across the nose bridge">Scar (Nose Bridge)</option>
+                            <option value="a scar on the chin">Scar (Chin)</option>
+                            <option value="a scar on the lip">Scar (Lip)</option>
+                            <option value="a scar near the left eye">Scar (Near Left Eye)</option>
+                            <option value="a tattoo on the neck">Neck Tattoo</option>
+                            <option value="a face tattoo">Face Tattoo</option>
+                            <option value="a tattoo behind the ear">Tattoo Behind Ear</option>
+                            <option value="deep wrinkles on the face">Deep Wrinkles</option>
+                            <option value="visible moles on the face">Facial Moles</option>
+                            <option value="a large mole or birthmark on the cheek">Birthmark (Cheek)</option>
+                            <option value="thick eyebrows">Thick Eyebrows</option>
+                            <option value="a broken or crooked nose">Broken/Crooked Nose</option>
+                            <option value="a cleft chin">Cleft Chin</option>
+                            <option value="dimples on cheeks">Dimples</option>
+                            <option value="freckles across the face">Freckles</option>
+                            <option value="acne or pockmarks on the face">Acne/Pockmarks</option>
+                            <option value="a gap between the front teeth">Gap Teeth</option>
+                            <option value="gold or metal teeth">Gold/Metal Teeth</option>
+                            <option value="wearing glasses or spectacles">Glasses</option>
+                            <option value="wearing sunglasses">Sunglasses</option>
+                            <option value="wearing an eye patch">Eye Patch</option>
+                            <option value="a lazy eye or squint">Lazy Eye/Squint</option>
+                        </select>
+                    </div>
+
+                    <div class="field-group">
+                        <div class="field-label">EXPRESSION/DEMEANOR</div>
+                        <select id="expression">
+                            <option value="">-- SELECT --</option>
+                            <option value="neutral calm expression">Neutral/Calm</option>
+                            <option value="angry aggressive expression">Angry/Aggressive</option>
+                            <option value="nervous anxious expression">Nervous/Anxious</option>
+                            <option value="stern serious expression">Stern/Serious</option>
+                            <option value="smirking sly expression">Smirking/Sly</option>
+                            <option value="tired exhausted expression">Tired/Exhausted</option>
+                            <option value="cold emotionless expression">Cold/Emotionless</option>
+                            <option value="confused dazed expression">Confused/Dazed</option>
+                        </select>
+                    </div>
+
+                    <div class="field-group">
+                        <div class="field-label">ADDITIONAL DESCRIPTION</div>
+                        <textarea id="extra"
+                            placeholder="e.g. wore glasses, had a crooked nose, appeared nervous, had a scar above the lip, was wearing a hoodie..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CRIME DETAILS PANEL -->
+        <div class="crime-panel">
+            <div class="panel-header">
+                <div class="dot"></div>
+                ⚠ CRIME DETAILS & INCIDENT REPORT
+            </div>
+            <div class="panel-body">
+                <div class="two-col">
+                    <div class="field-group">
+                        <div class="field-label" style="color:var(--red);">CRIME LOCATION</div>
+                        <input type="text" id="crime-location" placeholder="e.g. Andheri West, Mumbai, Maharashtra" />
+                    </div>
+                    <div class="field-group">
+                        <div class="field-label" style="color:var(--red);">STATE / REGION</div>
+                        <select id="crime-state">
+                            <option value="">-- SELECT STATE --</option>
+                            <option disabled style="color:var(--accent);">── INDIA ──</option>
+                            <option value="Andhra Pradesh">Andhra Pradesh</option>
+                            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                            <option value="Assam">Assam</option>
+                            <option value="Bihar">Bihar</option>
+                            <option value="Chhattisgarh">Chhattisgarh</option>
+                            <option value="Delhi">Delhi</option>
+                            <option value="Goa">Goa</option>
+                            <option value="Gujarat">Gujarat</option>
+                            <option value="Haryana">Haryana</option>
+                            <option value="Himachal Pradesh">Himachal Pradesh</option>
+                            <option value="Jharkhand">Jharkhand</option>
+                            <option value="Karnataka">Karnataka</option>
+                            <option value="Kerala">Kerala</option>
+                            <option value="Madhya Pradesh">Madhya Pradesh</option>
+                            <option value="Maharashtra">Maharashtra</option>
+                            <option value="Manipur">Manipur</option>
+                            <option value="Meghalaya">Meghalaya</option>
+                            <option value="Mizoram">Mizoram</option>
+                            <option value="Nagaland">Nagaland</option>
+                            <option value="Odisha">Odisha</option>
+                            <option value="Punjab">Punjab</option>
+                            <option value="Rajasthan">Rajasthan</option>
+                            <option value="Sikkim">Sikkim</option>
+                            <option value="Tamil Nadu">Tamil Nadu</option>
+                            <option value="Telangana">Telangana</option>
+                            <option value="Tripura">Tripura</option>
+                            <option value="Uttar Pradesh">Uttar Pradesh</option>
+                            <option value="Uttarakhand">Uttarakhand</option>
+                            <option value="West Bengal">West Bengal</option>
+                            <option disabled style="color:var(--accent);">── OTHER ──</option>
+                            <option value="International">International</option>
+                            <option value="Unknown">Unknown</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="two-col">
+                    <div class="field-group">
+                        <div class="field-label" style="color:var(--red);">CRIME TYPE / IPC SECTION</div>
+                        <select id="crime-type">
+                            <option value="">-- SELECT CRIME TYPE --</option>
+                            <option disabled style="color:var(--red);">── VIOLENT CRIMES ──</option>
+                            <option value="Murder (IPC 302)">Murder (IPC 302)</option>
+                            <option value="Attempt to Murder (IPC 307)">Attempt to Murder (IPC 307)</option>
+                            <option value="Culpable Homicide (IPC 304)">Culpable Homicide (IPC 304)</option>
+                            <option value="Assault / Grievous Hurt (IPC 325/326)">Assault / Grievous Hurt (IPC 325/326)
+                            </option>
+                            <option value="Kidnapping / Abduction (IPC 363-369)">Kidnapping / Abduction (IPC 363-369)
+                            </option>
+                            <option value="Dacoity / Armed Robbery (IPC 395)">Dacoity / Armed Robbery (IPC 395)</option>
+                            <option value="Robbery (IPC 392)">Robbery (IPC 392)</option>
+                            <option value="Rioting (IPC 147/148)">Rioting (IPC 147/148)</option>
+                            <option disabled style="color:var(--red);">── PROPERTY CRIMES ──</option>
+                            <option value="Theft (IPC 379)">Theft (IPC 379)</option>
+                            <option value="Burglary / Housebreaking (IPC 454-460)">Burglary / Housebreaking (IPC
+                                454-460)</option>
+                            <option value="Extortion (IPC 383)">Extortion (IPC 383)</option>
+                            <option value="Criminal Trespass (IPC 441)">Criminal Trespass (IPC 441)</option>
+                            <option value="Vehicle Theft">Vehicle Theft</option>
+                            <option value="Arson / Mischief by Fire (IPC 435/436)">Arson / Mischief by Fire (IPC
+                                435/436)</option>
+                            <option disabled style="color:var(--red);">── FINANCIAL / FRAUD ──</option>
+                            <option value="Cheating / Fraud (IPC 420)">Cheating / Fraud (IPC 420)</option>
+                            <option value="Forgery (IPC 463-471)">Forgery (IPC 463-471)</option>
+                            <option value="Cybercrime / IT Act">Cybercrime / IT Act</option>
+                            <option value="Money Laundering (PMLA)">Money Laundering (PMLA)</option>
+                            <option value="Identity Theft">Identity Theft</option>
+                            <option disabled style="color:var(--red);">── NARCOTICS / SMUGGLING ──</option>
+                            <option value="Drug Trafficking (NDPS Act)">Drug Trafficking (NDPS Act)</option>
+                            <option value="Drug Possession (NDPS Act)">Drug Possession (NDPS Act)</option>
+                            <option value="Arms Smuggling (Arms Act)">Arms Smuggling (Arms Act)</option>
+                            <option value="Human Trafficking">Human Trafficking</option>
+                            <option disabled style="color:var(--red);">── OTHER ──</option>
+                            <option value="Sexual Assault (IPC 375/376)">Sexual Assault (IPC 375/376)</option>
+                            <option value="Domestic Violence (DV Act)">Domestic Violence (DV Act)</option>
+                            <option value="Stalking / Harassment (IPC 354D)">Stalking / Harassment (IPC 354D)</option>
+                            <option value="Criminal Intimidation (IPC 503/506)">Criminal Intimidation (IPC 503/506)
+                            </option>
+                            <option value="Counterfeiting (IPC 489)">Counterfeiting (IPC 489)</option>
+                            <option value="Terrorism (UAPA)">Terrorism (UAPA)</option>
+                            <option value="Other">Other (Specify Below)</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <div class="field-label" style="color:var(--red);">DATE OF INCIDENT</div>
+                        <input type="text" id="crime-date" placeholder="e.g. 28 April 2026, approx 11:30 PM" />
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <div class="field-label" style="color:var(--red);">DETAILED CRIME DESCRIPTION / FIR NOTES</div>
+                    <textarea id="crime-desc" style="min-height:90px; border-color: rgba(220,53,69,0.3);"
+                        placeholder="Describe the crime in detail — what happened, how the suspect was involved, weapons used, witnesses present, mode of operation, any evidence found at scene, victim details, etc."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <button class="generate-btn" id="gen-btn" onclick="generateSketch()">
+            ⬡ GENERATE SUSPECT SKETCH & FILE CASE REPORT ⬡
+        </button>
+
+        <div style="height:12px;"></div>
+
+        <div class="output-panel" id="output-section">
+            <div class="panel-header" style="border-top:none;">
+                <div class="dot"></div>
+                PHANTOM RENDER OUTPUT
+                <span style="margin-left:auto; font-size:9px; color:var(--muted);" id="ts-label"></span>
+            </div>
+            <div class="output-grid">
+                <div class="sketch-area" id="sketch-area">
+                    <div class="corner-tl"></div>
+                    <div class="corner-tr"></div>
+                    <div class="corner-bl"></div>
+                    <div class="corner-br"></div>
+                    <div class="sketch-placeholder" id="placeholder">
+                        <div class="sketch-icon">👤</div>
+                        <p>AWAITING INPUT</p>
+                        <p style="margin-top:4px;">NO SUBJECT RENDERED</p>
+                    </div>
+                    <img id="generated-image" alt="Generated forensic sketch" />
+                    <div class="sketch-label" id="sketch-label" style="display:none;">PHANTOM-AI GENERATED SKETCH</div>
+                    <div class="loading-overlay" id="loading">
+                        <div class="spinner"></div>
+                        <div class="loading-text" id="loading-text">ANALYZING DESCRIPTION</div>
+                        <div class="loading-sub" id="loading-sub">PROCESSING NLP FEATURES...</div>
+                    </div>
+                    <div class="watermark">PHANTOM.AI v2.1</div>
+                </div>
+
+                <div class="profile-area">
+                    <div
+                        style="font-family:'Share Tech Mono',monospace; font-size:10px; color:var(--accent); letter-spacing:2px; margin-bottom:10px; border-bottom:1px solid var(--border); padding-bottom:6px;">
+                        SUBJECT PROFILE
+                    </div>
+
+                    <div class="profile-field">
+                        <div class="pf-label">CASE ID</div>
+                        <div class="pf-value highlight" id="p-caseid">—</div>
+                    </div>
+                    <div class="profile-field">
+                        <div class="pf-label">AGE</div>
+                        <div class="pf-value" id="p-age">—</div>
+                    </div>
+                    <div class="profile-field">
+                        <div class="pf-label">GENDER</div>
+                        <div class="pf-value" id="p-gender">—</div>
+                    </div>
+                    <div class="profile-field">
+                        <div class="pf-label">ETHNICITY</div>
+                        <div class="pf-value" id="p-ethnicity">—</div>
+                    </div>
+                    <div class="profile-field">
+                        <div class="pf-label">HAIR</div>
+                        <div class="pf-value" id="p-hair">—</div>
+                    </div>
+                    <div class="profile-field">
+                        <div class="pf-label">EYES</div>
+                        <div class="pf-value" id="p-eyes">—</div>
+                    </div>
+                    <div class="profile-field">
+                        <div class="pf-label">FACE</div>
+                        <div class="pf-value" id="p-face">—</div>
+                    </div>
+                    <div class="profile-field">
+                        <div class="pf-label">MARKS</div>
+                        <div class="pf-value" id="p-marks">—</div>
+                    </div>
+
+                    <div
+                        style="font-family:'Share Tech Mono',monospace; font-size:10px; color:var(--red); letter-spacing:2px; margin:12px 0 8px; border-top:1px solid rgba(220,53,69,0.2); padding-top:8px;">
+                        ⚠ CRIME INFORMATION
+                    </div>
+                    <div class="profile-field">
+                        <div class="pf-label" style="color:var(--red);">LOCATION</div>
+                        <div class="pf-value" id="p-location">—</div>
+                    </div>
+                    <div class="profile-field">
+                        <div class="pf-label" style="color:var(--red);">CRIME</div>
+                        <div class="pf-value" id="p-crime" style="color:var(--red);">—</div>
+                    </div>
+                    <div class="profile-field">
+                        <div class="pf-label" style="color:var(--red);">DATE</div>
+                        <div class="pf-value" id="p-crimedate">—</div>
+                    </div>
+                    <div class="profile-field" style="border-bottom:none;">
+                        <div class="pf-label" style="color:var(--red);">DETAILS</div>
+                        <div class="pf-value" id="p-crimedesc" style="font-size:9px; line-height:1.5; text-align:left;">
+                            —</div>
+                    </div>
+                    <div class="ai-desc-area" id="ai-desc">
+                        <div class="ai-desc-label">▸ NLP FEATURE EXTRACTION OUTPUT</div>
+                        <div id="ai-desc-text"></div>
+                    </div>
+
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" id="conf-bar"></div>
+                    </div>
+                    <div
+                        style="font-family:'Share Tech Mono',monospace; font-size:9px; color:var(--muted); margin-top:4px; text-align:right;">
+                        MATCH CONFIDENCE: <span id="conf-pct" style="color:var(--accent);">—</span>
+                    </div>
+
+                    <div class="err-msg" id="err-msg"></div>
+
+                    <div class="match-verify" id="match-verify">
+                        <div class="match-verify-label">▸ DOES THIS SKETCH MATCH THE SUSPECT?</div>
+                        <div class="match-buttons">
+                            <button class="match-btn yes" onclick="submitMatch('YES')">✓ YES — MATCH</button>
+                            <button class="match-btn partial" onclick="submitMatch('PARTIAL')">◐ PARTIAL MATCH</button>
+                            <button class="match-btn no" onclick="submitMatch('NO')">✗ NO MATCH</button>
+                        </div>
+                        <div class="match-result" id="match-result"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="status-bar">
+                <span><span class="status-dot"></span>FORENSIC UNIT ONLINE | CRIME DIVISION ACTIVE | CASE DATABASE
+                    CONNECTED</span>
+                <span id="status-time">READY</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let sketchCount = 0;
+        const loadingMsgs = [
+            ["ANALYZING DESCRIPTION", "EXTRACTING NLP FEATURES..."],
+            ["ENCODING FEATURES", "CONVERTING TO EMBEDDINGS..."],
+            ["QUERYING AI MODEL", "GENERATING FACIAL STRUCTURE..."],
+            ["RENDERING SKETCH", "APPLYING FORENSIC FILTERS..."],
+        ];
+
+        function genCaseId() {
+            return 'PH-' + Date.now().toString(36).toUpperCase().slice(-6);
+        }
+
+        function getVal(id) {
+            const el = document.getElementById(id);
+            return el ? el.value : '';
+        }
+
+        function buildPrompt(description) {
+            return `ultra realistic portrait photograph, highly detailed face, vivid natural skin tones, full color, photorealistic, studio lighting, sharp focus, detailed facial features, mugshot style front-facing portrait, neutral background, forensic identification photo of a person with the following features: ${description}. 8k resolution, lifelike colors, natural complexion, cinematic lighting`;
+        }
+
+        async function generateSketch() {
+            const age = getVal('age');
+            const gender = getVal('gender');
+            const ethnicity = getVal('ethnicity');
+            const build = getVal('build');
+            const skinTone = getVal('skin-tone');
+            const height = getVal('height');
+            const hairColor = getVal('hair-color');
+            const hairStyle = getVal('hair-style');
+            const facialHair = getVal('facial-hair');
+            const eyes = getVal('eyes');
+            const eyeColor = getVal('eye-color');
+            const nose = getVal('nose');
+            const jaw = getVal('jaw');
+            const lips = getVal('lips');
+            const forehead = getVal('forehead');
+            const eyebrows = getVal('eyebrows');
+            const ears = getVal('ears');
+            const marks = getVal('marks');
+            const expression = getVal('expression');
+            const extra = getVal('extra').trim();
+
+            const crimeLocation = getVal('crime-location').trim();
+            const crimeState = getVal('crime-state');
+            const crimeType = getVal('crime-type');
+            const crimeDate = getVal('crime-date').trim();
+            const crimeDesc = getVal('crime-desc').trim();
+
+            if (!age || !gender) {
+                showErr('REQUIRED: AGE RANGE AND GENDER MUST BE SELECTED');
+                return;
+            }
+
+            const caseId = genCaseId();
+            sketchCount++;
+
+            document.getElementById('total-sketches').textContent = String(sketchCount).padStart(2, '0');
+            document.getElementById('case-number-display').textContent = caseId;
+            document.getElementById('conf-display').textContent = '...';
+            document.getElementById('err-msg').style.display = 'none';
+            document.getElementById('match-verify').classList.remove('visible');
+            document.getElementById('match-result').classList.remove('visible');
+            document.querySelectorAll('.match-btn').forEach(b => b.classList.remove('selected'));
+
+            document.getElementById('p-caseid').textContent = caseId;
+            document.getElementById('p-age').textContent = age.split(',')[0].trim().toUpperCase();
+            document.getElementById('p-gender').textContent = gender.toUpperCase();
+            document.getElementById('p-ethnicity').textContent = ethnicity ? ethnicity.toUpperCase() : 'UNSPECIFIED';
+            document.getElementById('p-hair').textContent = ((hairColor || '') + ' ' + (hairStyle || '')).trim().toUpperCase() || '—';
+            document.getElementById('p-eyes').textContent = (eyes + (eyeColor ? ', ' + eyeColor : '')).toUpperCase();
+            document.getElementById('p-face').textContent = (jaw + ', ' + nose).toUpperCase();
+            document.getElementById('p-marks').textContent = marks ? marks.toUpperCase() : 'NONE';
+
+            const fullLocation = [crimeLocation, crimeState].filter(Boolean).join(', ');
+            document.getElementById('p-location').textContent = fullLocation ? fullLocation.toUpperCase() : '—';
+            document.getElementById('p-crime').textContent = crimeType || '—';
+            document.getElementById('p-crimedate').textContent = crimeDate ? crimeDate.toUpperCase() : '—';
+            document.getElementById('p-crimedesc').textContent = crimeDesc || '—';
+
+            document.getElementById('ts-label').textContent = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+            document.getElementById('placeholder').style.display = 'none';
+            document.getElementById('generated-image').style.display = 'none';
+            document.getElementById('sketch-label').style.display = 'none';
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('gen-btn').disabled = true;
+            document.getElementById('status-time').textContent = 'PROCESSING...';
+
+            let msgIdx = 0;
+            const msgTimer = setInterval(() => {
+                if (msgIdx < loadingMsgs.length) {
+                    document.getElementById('loading-text').textContent = loadingMsgs[msgIdx][0];
+                    document.getElementById('loading-sub').textContent = loadingMsgs[msgIdx][1];
+                    msgIdx++;
+                }
+            }, 1800);
+
+            try {
+                const rawDesc = [
+                    age, gender,
+                    ethnicity ? ethnicity + ' ethnicity' : '',
+                    build, skinTone, height,
+                    hairColor, hairStyle,
+                    facialHair,
+                    eyes, eyeColor,
+                    eyebrows,
+                    nose, lips, forehead,
+                    jaw, ears,
+                    marks, expression,
+                    extra
+                ].filter(Boolean).join(', ');
+
+                const imagePrompt = buildPrompt(rawDesc);
+
+                document.getElementById('ai-desc-text').textContent = imagePrompt;
+                document.getElementById('ai-desc').classList.add('visible');
+
+                const encodedPrompt = encodeURIComponent(imagePrompt);
+                const seed = Math.floor(Math.random() * 999999);
+                const imgUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=640&seed=${seed}&nologo=true&enhance=true&model=flux`;
+
+                await new Promise((resolve, reject) => {
+                    const img = document.getElementById('generated-image');
+                    img.onload = resolve;
+                    img.onerror = reject;
+                    img.src = imgUrl;
+                });
+
+                clearInterval(msgTimer);
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('generated-image').style.display = 'block';
+                document.getElementById('sketch-label').style.display = 'block';
+                document.getElementById('match-verify').classList.add('visible');
+
+                const conf = Math.floor(Math.random() * 15 + 82);
+                document.getElementById('conf-bar').style.width = conf + '%';
+                document.getElementById('conf-pct').textContent = conf + '%';
+                document.getElementById('conf-display').textContent = conf + '%';
+                document.getElementById('status-time').textContent = 'RENDER COMPLETE ' + new Date().toLocaleTimeString();
+
+            } catch (err) {
+                clearInterval(msgTimer);
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('placeholder').style.display = 'block';
+                showErr('ERROR: IMAGE GENERATION FAILED. CHECK CONNECTION AND RETRY.');
+                document.getElementById('status-time').textContent = 'ERROR';
+            }
+
+            document.getElementById('gen-btn').disabled = false;
+        }
+
+        function submitMatch(result) {
+            document.querySelectorAll('.match-btn').forEach(b => b.classList.remove('selected'));
+            event.target.classList.add('selected');
+            const resultEl = document.getElementById('match-result');
+            const caseId = document.getElementById('p-caseid').textContent;
+            const ts = new Date().toISOString().slice(0, 19).replace('T', ' ');
+            if (result === 'YES') {
+                resultEl.innerHTML = `<span style="color:var(--green)">✓ MATCH CONFIRMED</span> — Case ${caseId} logged as POSITIVE ID at ${ts}`;
+                resultEl.style.borderColor = 'var(--green)';
+            } else if (result === 'PARTIAL') {
+                resultEl.innerHTML = `<span style="color:#e67e22">◐ PARTIAL MATCH</span> — Case ${caseId} flagged for REFINEMENT at ${ts}. Adjust features and regenerate.`;
+                resultEl.style.borderColor = '#e67e22';
+            } else {
+                resultEl.innerHTML = `<span style="color:var(--red)">✗ NO MATCH</span> — Case ${caseId} logged as NEGATIVE at ${ts}. Re-enter description and regenerate.`;
+                resultEl.style.borderColor = 'var(--red)';
+            }
+            resultEl.classList.add('visible');
+        }
+
+        function showErr(msg) {
+            const el = document.getElementById('err-msg');
+            el.textContent = msg;
+            el.style.display = 'block';
+        }
+
+        document.getElementById('status-time').textContent = new Date().toLocaleTimeString();
+        setInterval(() => {
+            if (document.getElementById('status-time').textContent.includes('READY')) {
+                document.getElementById('status-time').textContent = 'STANDBY ' + new Date().toLocaleTimeString();
+            }
+        }, 10000);
+    </script>
+</body>
+
+</html>
